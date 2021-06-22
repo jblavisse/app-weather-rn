@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import axios from 'axios';
 import CurrentWeather from './CurrentWeather';
+import DayWeather from './DayWeather';
 
 export default function App() {
   const [weatherData,setWeatherData] = useState({});
@@ -18,11 +19,7 @@ export default function App() {
   if(Object.entries(weatherData).length > 0) {
 
     const dailyJSX = weatherData.daily.map(day => {
-      return <View style={styles.day}>
-        <Text>Min: {day.temp.min}</Text>
-        <Text>Max: {day.temp.max}</Text>
-      </View>
-      // return <DayWeather data={} />
+      return <DayWeather day={day} />
     })
 
     return (
@@ -46,8 +43,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  day: {
-    margin: 10
   }
 });
