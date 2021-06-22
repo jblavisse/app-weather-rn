@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import axios from 'axios';
 
 export default function App() {
@@ -29,9 +29,17 @@ export default function App() {
   // Dans weatherData, j'ai bien des infos si 
   // la longueur des propriétés de mon objet vaut plus que 0
   if(Object.entries(weatherData).length > 0) {
+    const current = weatherData.current;
+    const weather = current.weather[0];
     return (
       <View style={styles.container}>
-        <Text>{weatherData.current.temp}</Text>
+        <Text>Température réelle: {current.temp}</Text>
+        <Text>Température ressentie: {current.feels_like}</Text>
+        <Text>{weather.description}</Text>
+
+        <Image style={styles.myImg} source={{
+          uri: `http://openweathermap.org/img/wn/${weather.icon}@2x.png`,
+        }} />
       </View>
     );
   }
@@ -50,4 +58,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  myImg: {
+    width: 100,
+    height: 100
+  }
 });
