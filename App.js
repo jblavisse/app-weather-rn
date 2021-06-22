@@ -31,6 +31,13 @@ export default function App() {
   if(Object.entries(weatherData).length > 0) {
     const current = weatherData.current;
     const weather = current.weather[0];
+
+    const dailyJSX = weatherData.daily.map(day => {
+      return <View style={styles.day}>
+        <Text>Min: {day.temp.min}</Text>
+        <Text>Max: {day.temp.max}</Text>
+      </View>
+    })
     return (
       <View style={styles.container}>
         <Text>Température réelle: {current.temp}</Text>
@@ -40,6 +47,8 @@ export default function App() {
         <Image style={styles.myImg} source={{
           uri: `http://openweathermap.org/img/wn/${weather.icon}@2x.png`,
         }} />
+
+        {dailyJSX}
       </View>
     );
   }
@@ -61,5 +70,8 @@ const styles = StyleSheet.create({
   myImg: {
     width: 100,
     height: 100
+  },
+  day: {
+    margin: 10
   }
 });
