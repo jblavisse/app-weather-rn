@@ -25,8 +25,7 @@ export default function App() {
     return (
       <View style={styles.container}>
           <CurrentWeather current={weatherData.current} />
-
-        {dailyJSX}
+          {dailyJSX}
       </View>
     );
   }
