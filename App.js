@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import axios from 'axios';
+import CurrentWeather from './CurrentWeather';
 
 export default function App() {
   const [weatherData,setWeatherData] = useState({});
@@ -13,47 +14,26 @@ export default function App() {
     })
   }, [])
 
-  /* 
-  C'est pas parceque l'API est chargé que l'écran ne tourne pas
-  Vous avez déjà un visuel avant que vous ayez vos données de l'API
-
-  Un ennui: weatherData.current.temp, ça n'existe pas avant de récupérer les données
-
-  Vérification, si l'objet weatherData n'est pas vide, ça veut 
-  dire qu'il y a des données et que donc on peut afficher quelque
-  chose.
-  Dans le cas contraire, non 
-  */
-
-  // Cas où les données sont chargées
-  // Dans weatherData, j'ai bien des infos si 
-  // la longueur des propriétés de mon objet vaut plus que 0
+  // Si API chargé
   if(Object.entries(weatherData).length > 0) {
-    const current = weatherData.current;
-    const weather = current.weather[0];
 
     const dailyJSX = weatherData.daily.map(day => {
       return <View style={styles.day}>
         <Text>Min: {day.temp.min}</Text>
         <Text>Max: {day.temp.max}</Text>
       </View>
+      // return <DayWeather data={} />
     })
+
     return (
       <View style={styles.container}>
-        <Text>Température réelle: {current.temp}</Text>
-        <Text>Température ressentie: {current.feels_like}</Text>
-        <Text>{weather.description}</Text>
-
-        <Image style={styles.myImg} source={{
-          uri: `http://openweathermap.org/img/wn/${weather.icon}@2x.png`,
-        }} />
+          <CurrentWeather current={weatherData.current} />
 
         {dailyJSX}
       </View>
     );
   }
-  // Cas où les données ne sont pas encore chargées de l'API
-  // weatherData est à sa valeur par défaut: {}
+  // Si API pas encore chargé
   else {
     return <Text>Loading...</Text>
   }
@@ -66,10 +46,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  myImg: {
-    width: 100,
-    height: 100
   },
   day: {
     margin: 10
